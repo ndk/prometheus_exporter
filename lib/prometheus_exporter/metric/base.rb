@@ -106,8 +106,15 @@ module PrometheusExporter::Metric
       end
     end
 
-    def needs_escape?(str)
-      str.match?(/[\n"\\]/m)
+    # when we drop Ruby 2.3 we can drop this
+    if "".respond_to? :match?
+      def needs_escape?(str)
+        str.match?(/[\n"\\]/m)
+      end
+    else
+      def needs_escape?(str)
+        !!str.match(/[\n"\\]/m)
+      end
     end
 
   end
